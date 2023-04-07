@@ -6,6 +6,8 @@ import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 public class WorkerAgent extends Thread {
@@ -29,46 +31,20 @@ public class WorkerAgent extends Thread {
             }
 
             if (!opt.isPresent()) {
-//                System.out.println(getName() + ": exiting...");
-                return; // end the worker because no more work to do
+                return;
             }
+
             Task task = opt.get();
 
-
-            if (task instanceof FolderAnalyzerTask) {
-                FolderAnalyzerTask t = (FolderAnalyzerTask) task;
-                analyzeFolder(t.path());
-            } else if (task instanceof FileAnalyzerTask) {
-                FileAnalyzerTask t = (FileAnalyzerTask) task;
-                analyzeFile(t.path());
-            } else {
-                throw new IllegalThreadStateException("Illegal task to perform");
-            }
-
-            bag.completeAssignedTask(); // Post protocol
+            analyzeFile(task.path());
 
         }
-    }
-
-    private void analyzeFolder(String folder) {
-        String[] nodes = new File(folder).list();
-        if (nodes == null) return;
-
-        for (String element : nodes) {
-            File node = new File(folder + "/" + element);
-            if (node.isDirectory()) {
-                bag.addNewTask(new FolderAnalyzerTask(node.getPath()));
-            } else if (!node.getName().endsWith(FILE_EXTENSION)){
-                bag.addNewTask(new FileAnalyzerTask(node.getPath()));
-            }
-        }
-//        System.out.println(getName() + ": " + folder);
     }
 
     private void analyzeFile(String file) {
-        int lines = 0;
+        long lines = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            while (reader.readLine() != null) lines++;
+            lines = reader.lines().count();
         } catch (IOException e) {
             //throw new RuntimeException(e);
         }

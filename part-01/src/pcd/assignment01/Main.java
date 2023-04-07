@@ -1,5 +1,6 @@
 package pcd.assignment01;
 
+import pcd.assignment01.model.agent.ProducerAgent;
 import pcd.assignment01.model.agent.WorkerAgent;
 import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.TaskBag;
@@ -8,12 +9,16 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         TaskBag bag = new TaskBag();
-        bag.addNewTask(new FolderAnalyzerTask("../../../../../Zotero"));
-        bag.addNewTask(new FolderAnalyzerTask("../../../../../MacDocuments"));
-        bag.addNewTask(new FolderAnalyzerTask("../../../../../Pictures"));
-        bag.addNewTask(new FolderAnalyzerTask("../../../../../miniconda3"));
-        bag.addNewTask(new FolderAnalyzerTask("../../../../../Documents"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Zotero"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../MacDocuments"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Pictures"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../miniconda3"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Documents"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Postman"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../opt"));
+//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Downloads"));
 
+        Thread producer = new ProducerAgent(bag, "../../../../../miniconda3");
 
 
         Thread t = new WorkerAgent(bag);
@@ -28,6 +33,7 @@ public class Main {
         Thread t10 = new WorkerAgent(bag);
 
         long start = System.currentTimeMillis();
+        producer.start();
         t.start();
         t2.start();
         t3.start();
@@ -39,6 +45,7 @@ public class Main {
         t9.start();
         t10.start();
 
+        producer.join();
         t.join();
         t2.join();
         t3.join();
