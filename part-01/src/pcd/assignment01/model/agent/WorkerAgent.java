@@ -50,19 +50,20 @@ public class WorkerAgent extends Thread {
     }
 
     private void analyzeFolder(String folder) {
-        File[] nodes = new File(folder).listFiles();
+        String[] nodes = new File(folder).list();
         if (nodes == null) return;
 
-        for (File element : nodes) {
-            if (element.isDirectory()) {
-                bag.addNewTask(new FolderAnalyzerTask(element.getPath()));
-            } else if (element.getName().endsWith(FILE_EXTENSION)){
-                bag.addNewTask(new FileAnalyzerTask(element.getPath()));
+        for (String element : nodes) {
+            File node = new File(folder + "/" + element);
+            if (node.isDirectory()) {
+                bag.addNewTask(new FolderAnalyzerTask(node.getPath()));
+            } else if (node.getName().endsWith(FILE_EXTENSION)){
+                bag.addNewTask(new FileAnalyzerTask(node.getPath()));
             }
         }
     }
 
     private void analyzeFile(String file) {
-        // TODO
+        System.out.println(file);
     }
 }
