@@ -5,10 +5,12 @@ import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
+import java.io.File;
 import java.util.Optional;
 
 public class WorkerAgent extends Thread {
 
+    public static final String FILE_EXTENSION = ".java";
     private final TaskBag bag;
 
     public WorkerAgent(TaskBag bag) {
@@ -48,7 +50,16 @@ public class WorkerAgent extends Thread {
     }
 
     private void analyzeFolder(String folder) {
-        // TODO
+        File[] nodes = new File(folder).listFiles();
+        if (nodes == null) return;
+
+        for (File element : nodes) {
+            if (element.isDirectory()) {
+                bag.addNewTask(new FolderAnalyzerTask(element.getPath()));
+            } else if (element.getName().endsWith(FILE_EXTENSION)){
+                bag.addNewTask(new FileAnalyzerTask(element.getPath()));
+            }
+        }
     }
 
     private void analyzeFile(String file) {

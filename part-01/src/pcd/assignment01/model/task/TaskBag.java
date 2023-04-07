@@ -9,17 +9,11 @@ public class TaskBag {
 
     public synchronized void addNewTask(Task task) {
         bag.addLast(task);
-        notifyAll();
-    }
-
-    public synchronized void addAllNewTasks(Collection<Task> tasks) {
-        List<Task> copy = new ArrayList<>(tasks); // defensive copy
-        bag.addAll(copy);
-        notifyAll();
+        notify();
     }
 
     /**
-     * Post protocol method
+     * Post protocol method -- call this after complete a task and before waiting for another one
      */
     public void completeAssignedTask() {
         inProcessTasks--;
