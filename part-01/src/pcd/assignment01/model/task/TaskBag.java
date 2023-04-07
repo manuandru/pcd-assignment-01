@@ -15,7 +15,7 @@ public class TaskBag {
     /**
      * Post protocol method -- call this after complete a task and before waiting for another one
      */
-    public void completeAssignedTask() {
+    public synchronized void completeAssignedTask() {
         inProcessTasks--;
     }
 

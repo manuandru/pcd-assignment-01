@@ -5,12 +5,12 @@ import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
-import java.io.File;
+import java.io.*;
 import java.util.Optional;
 
 public class WorkerAgent extends Thread {
 
-    public static final String FILE_EXTENSION = ".java";
+    public static final String FILE_EXTENSION = ".MP4";
     private final TaskBag bag;
 
     public WorkerAgent(TaskBag bag) {
@@ -29,6 +29,7 @@ public class WorkerAgent extends Thread {
             }
 
             if (!opt.isPresent()) {
+//                System.out.println(getName() + ": exiting...");
                 return; // end the worker because no more work to do
             }
             Task task = opt.get();
@@ -57,13 +58,20 @@ public class WorkerAgent extends Thread {
             File node = new File(folder + "/" + element);
             if (node.isDirectory()) {
                 bag.addNewTask(new FolderAnalyzerTask(node.getPath()));
-            } else if (node.getName().endsWith(FILE_EXTENSION)){
+            } else if (!node.getName().endsWith(FILE_EXTENSION)){
                 bag.addNewTask(new FileAnalyzerTask(node.getPath()));
             }
         }
+//        System.out.println(getName() + ": " + folder);
     }
 
     private void analyzeFile(String file) {
-        System.out.println(file);
+        int lines = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            while (reader.readLine() != null) lines++;
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+        }
+//        System.out.println(getName() + ": " + file + " -> " + lines);
     }
 }
