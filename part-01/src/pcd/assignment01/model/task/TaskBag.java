@@ -1,13 +1,11 @@
 package pcd.assignment01.model.task;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TaskBag {
 
     private final LinkedList<Task> bag = new LinkedList<>();
+    private int inProcessTasks = 0;
 
     public synchronized void addNewTask(Task task) {
         bag.addLast(task);
@@ -20,10 +18,22 @@ public class TaskBag {
         notifyAll();
     }
 
-    public synchronized Task getATask() throws InterruptedException {
+    /**
+     * Post protocol method
+     */
+    public void completeAssignedTask() {
+        inProcessTasks--;
+    }
+
+    public synchronized Optional<Task> getATask() throws InterruptedException {
         while (bag.isEmpty()) {
+            if (inProcessTasks == 0) {
+                notifyAll();
+                return Optional.empty();
+            }
             wait();
         }
-        return bag.removeFirst();
+        inProcessTasks++;
+        return Optional.of(bag.removeFirst());
     }
 }

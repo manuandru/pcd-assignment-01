@@ -5,6 +5,8 @@ import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
+import java.util.Optional;
+
 public class WorkerAgent extends Thread {
 
     private final TaskBag bag;
@@ -17,25 +19,39 @@ public class WorkerAgent extends Thread {
     public void run() {
         while (true) {
 
-            Task task;
+            Optional<Task> opt;
             try {
-                task = bag.getATask();  // blocking - wait for a task to do
+                opt = bag.getATask();  // blocking - wait for a task to do
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-            System.out.println(task.path());
+            if (!opt.isPresent()) {
+                return; // end the worker because no more work to do
+            }
+            Task task = opt.get();
+
 
             if (task instanceof FolderAnalyzerTask) {
                 FolderAnalyzerTask t = (FolderAnalyzerTask) task;
-                // TODO
+                analyzeFolder(t.path());
             } else if (task instanceof FileAnalyzerTask) {
                 FileAnalyzerTask t = (FileAnalyzerTask) task;
-                // TODO
+                analyzeFile(t.path());
             } else {
                 throw new IllegalThreadStateException("Illegal task to perform");
             }
 
+            bag.completeAssignedTask(); // Post protocol
+
         }
+    }
+
+    private void analyzeFolder(String folder) {
+        // TODO
+    }
+
+    private void analyzeFile(String file) {
+        // TODO
     }
 }
