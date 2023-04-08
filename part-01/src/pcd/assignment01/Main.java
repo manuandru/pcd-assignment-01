@@ -2,73 +2,39 @@ package pcd.assignment01;
 
 import pcd.assignment01.model.agent.ProducerAgent;
 import pcd.assignment01.model.agent.WorkerAgent;
-import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.TaskBag;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
+        String directory = "./";    // D
+        int nInterval = 5;          // NI
+        int maxInterval = 1000;     // MAXL
+
         TaskBag bag = new TaskBag();
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Zotero"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../MacDocuments"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Pictures"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../miniconda3"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Documents"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Postman"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../opt"));
-//        bag.addNewTask(new FolderAnalyzerTask("../../../../../Downloads"));
+        int CONSUMERS_COUNT = Runtime.getRuntime().availableProcessors();
 
-        Thread producer = new ProducerAgent(bag, "../../../../../miniconda3");
+        Thread producer = new ProducerAgent(bag, "./");
+        List<Thread> consumers = new ArrayList<>();
 
-
-        Thread t = new WorkerAgent(bag);
-        Thread t2 = new WorkerAgent(bag);
-        Thread t3 = new WorkerAgent(bag);
-        Thread t4 = new WorkerAgent(bag);
-        Thread t5 = new WorkerAgent(bag);
-        Thread t6 = new WorkerAgent(bag);
-        Thread t7 = new WorkerAgent(bag);
-        Thread t8 = new WorkerAgent(bag);
-        Thread t9 = new WorkerAgent(bag);
-        Thread t10 = new WorkerAgent(bag);
+        for (int i = 0; i < CONSUMERS_COUNT; i++) {
+            consumers.add(new WorkerAgent(bag, "Worker-" + i, nInterval, maxInterval));
+        }
 
         long start = System.currentTimeMillis();
         producer.start();
-        t.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t5.start();
-        t6.start();
-        t7.start();
-        t8.start();
-        t9.start();
-        t10.start();
+        for (Thread c : consumers) {
+            c.start();
+        }
 
         producer.join();
-        t.join();
-        t2.join();
-        t3.join();
-        t4.join();
-        t5.join();
-        t6.join();
-        t7.join();
-        t8.join();
-        t9.join();
-        t10.join();
+        for (Thread c : consumers) {
+            c.join();
+        }
         long stop = System.currentTimeMillis();
         System.out.println("Time: " + (stop - start));
-
-
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-//        new WorkerAgent(bag).start();
-
     }
 }

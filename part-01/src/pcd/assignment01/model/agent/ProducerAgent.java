@@ -1,7 +1,6 @@
 package pcd.assignment01.model.agent;
 
 import pcd.assignment01.model.task.FileAnalyzerTask;
-import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
@@ -10,12 +9,13 @@ import java.util.*;
 
 public class ProducerAgent extends Thread {
 
-    public static final String FILE_EXTENSION = ".MP4";
+    public static final String FILE_EXTENSION = ".java";
     private final TaskBag bag;
     private final LinkedList<String> folders = new LinkedList<>();
 
     public ProducerAgent(TaskBag bag, String startingPath) {
         this.bag = bag;
+        setName("Producer");
         folders.add(startingPath);
     }
 
@@ -24,11 +24,10 @@ public class ProducerAgent extends Thread {
         while (true) {
 
             if (folders.isEmpty()) {
-                System.out.println("Exiting...");
+                System.out.println(getName() + ": no more folders -- exiting...");
                 bag.noMore();
                 return; // no more file to produce
             }
-
 
             String folder = folders.removeFirst();
             String[] nodes = new File(folder).list();
@@ -41,7 +40,7 @@ public class ProducerAgent extends Thread {
                     File node = new File(folder + "/" + element);
                     if (node.isDirectory()) {
                         folders.addLast(node.getPath());
-                    } else if (!node.getName().endsWith(FILE_EXTENSION)) {
+                    } else if (node.getName().endsWith(FILE_EXTENSION)) {
                         tasks.addLast(new FileAnalyzerTask(node.getPath()));
                     }
                 }

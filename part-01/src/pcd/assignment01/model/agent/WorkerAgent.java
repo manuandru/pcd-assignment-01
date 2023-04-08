@@ -1,28 +1,27 @@
 package pcd.assignment01.model.agent;
 
-import pcd.assignment01.model.task.FileAnalyzerTask;
-import pcd.assignment01.model.task.FolderAnalyzerTask;
 import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 public class WorkerAgent extends Thread {
 
-    public static final String FILE_EXTENSION = ".MP4";
     private final TaskBag bag;
+    private final int nInterval;
+    private final int maxInterval;
 
-    public WorkerAgent(TaskBag bag) {
+    public WorkerAgent(TaskBag bag, String name, int nInterval, int maxInterval) {
         this.bag = bag;
+        this.nInterval = nInterval;
+        this.maxInterval = maxInterval;
+        setName(name);
     }
 
     @Override
     public void run() {
         while (true) {
-
             Optional<Task> opt;
             try {
                 opt = bag.getATask();  // blocking - wait for a task to do
@@ -35,9 +34,7 @@ public class WorkerAgent extends Thread {
             }
 
             Task task = opt.get();
-
             analyzeFile(task.path());
-
         }
     }
 
@@ -48,6 +45,6 @@ public class WorkerAgent extends Thread {
         } catch (IOException e) {
             //throw new RuntimeException(e);
         }
-//        System.out.println(getName() + ": " + file + " -> " + lines);
+        System.out.println(getName() + ": " + file + " -> " + lines);
     }
 }
