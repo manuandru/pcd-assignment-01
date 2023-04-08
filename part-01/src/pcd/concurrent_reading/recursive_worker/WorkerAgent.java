@@ -69,6 +69,9 @@ public class WorkerAgent extends Thread {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while (reader.readLine() != null) lines++;
         } catch (IOException ignored) { }
-        // Do something with lines...
+        long sum = 0;
+        for (int i = 0; i < lines; i++) {
+            sum += lines;
+        }
     }
 }

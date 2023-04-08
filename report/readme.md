@@ -36,9 +36,12 @@ Per poter apprezzare i risultati, il codice è stato eseguito analizzando tutti 
 
 > I test sono stati ripetuti sempre sulla stessa directory.
 
-#### JDK8 
+##### JDK8 
 
-Il JDK8 (*corretto-1.8.0_362*) non ha permesso di scalare notevolmente tramite la soluzione adottata, $ S \approx 1.4 $
+Il JDK8 (*corretto-1.8.0_362*) non ha permesso di scalare notevolmente tramite la soluzione adottata, 
+$$ S \approx 1.4 $$
+
+<center>
 
 | #Consumers | Time (ms) |
 |:----------:|:---------:|
@@ -50,9 +53,11 @@ Il JDK8 (*corretto-1.8.0_362*) non ha permesso di scalare notevolmente tramite l
 |     12     |   39397   |
 |     13     |   39957   |
 
+</center>
+
 [VisualVM produttore consumatore JDK8](./img/architettura/prod-cons/visualvm-producer-consumer-jdk8.jpg)
 
-#### JDK17 
+##### JDK17
 
 Il JDK17 (*Oracle OpenJDK version 17.0.2*) invece, ha permesso di scalare notevolmente tramite la soluzione adottata.
 
@@ -82,3 +87,64 @@ $$ S = \frac{T_1}{T_N} \Rightarrow \frac{58.185}{10.698} \approx 5.5  $$
 
 ### Worker ricorsivi
 
+![Architettura worker](./img/architettura/worker/worker-schema.jpg)
+
+Il secondo approccio ideato per leggere da file mediante più Thread, è stato quello di sfruttare N *Worker*, un'unica componente attiva replicata. Tutti condividono un monitor (*TaskBag*) dove sono presenti i compiti da svolgere. A differenza dell'approccio precedente, ora sono gli worker stessi ad aggiungere nuovi Task, se necessario.
+
+Questa idea nasce dal fatto che, se gli worker che consumano file sono più veloci di chi li produce, rimarrebbero in attesa.
+Potendo far operare un worker sia come producer, che come consumer, questo permette di far svolgere i task a chiunque sia in attesa.
+
+Il ciclo di vita del worker inizia richiedendo un task al monitor e, se disponibile, lo elabora:
+
+- Se il Task ricevuto è un file (FileAnalyzerTask): lo analizza
+- Se il Task ricevuto è una cartella (FolderAnalyzerTask), allora esplora la cartella ed inserisce tanti FileAnalyzerTask e FolderAnalyzerTask in relazione ai nodi che trova.
+
+[Implementazione worker](../part-01/src/pcd/concurrent_reading/recursive_worker/)
+
+#### Performance
+
+Anche in questo caso il JDK8 si rivela peggiore del JDK17 in termini di scalabilità in lettura, al crescere del numero dei Thread.
+
+##### JDK8 
+
+$$ S \approx 1.1 $$
+
+<center>
+
+|   #Worker  | Time (ms) |
+|:----------:|:---------:|
+|      1     |   43190   |
+|      2     |   45411   |
+|      3     |   46572   |
+|      4     |    ...    |
+|     12     |   40136   |
+
+</center>
+
+[VisualVM worker JDK8](./img/architettura/worker/visualvm-worker-jdk8.jpg)
+
+##### JDK17
+
+
+$$ S \approx 5.5 $$
+
+<center>
+
+| #Workers | Time (ms) |
+|:--------:|:---------:|
+|     1    |   59429   |
+|     2    |   30435   |
+|     3    |   20950   |
+|     4    |   15739   |
+|     5    |   13182   |
+|     6    |   11544   |
+|    ...   |    ...    |
+|    12    |   11485   |
+|    13    |   10866   |
+
+
+</center>
+
+![Grafico speed up](./img/architettura/worker/worker-grafico.png)
+
+[VisualVM worker JDK17](./img/architettura/worker/visualvm-worker-jdk8.jpg)
