@@ -28,7 +28,8 @@ public class TaskBag {
         return Optional.of(bag.removeFirst());
     }
 
-    public void noMore() {
+    public synchronized void noMore() {
         this.endInsert = true;
+        notifyAll();
     }
 }

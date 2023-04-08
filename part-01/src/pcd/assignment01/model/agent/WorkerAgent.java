@@ -1,5 +1,6 @@
 package pcd.assignment01.model.agent;
 
+import pcd.assignment01.model.stats.StatisticCounter;
 import pcd.assignment01.model.task.Task;
 import pcd.assignment01.model.task.TaskBag;
 
@@ -9,13 +10,15 @@ import java.util.Optional;
 public class WorkerAgent extends Thread {
 
     private final TaskBag bag;
+    private final StatisticCounter stats;
     private final int nInterval;
-    private final int maxInterval;
+    private final int intervalSize;
 
-    public WorkerAgent(TaskBag bag, String name, int nInterval, int maxInterval) {
+    public WorkerAgent(TaskBag bag, String name, StatisticCounter stats, int nInterval, int maxInterval) {
         this.bag = bag;
+        this.stats = stats;
         this.nInterval = nInterval;
-        this.maxInterval = maxInterval;
+        this.intervalSize = maxInterval / (nInterval - 1);
         setName(name);
     }
 
@@ -39,12 +42,24 @@ public class WorkerAgent extends Thread {
     }
 
     private void analyzeFile(String file) {
-        long lines = 0;
+        int lines = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            lines = reader.lines().count();
+            lines = (int) reader.lines().count();
         } catch (IOException e) {
-            //throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
-        System.out.println(getName() + ": " + file + " -> " + lines);
+
+        int fileInterval = getIntervalOfFile(lines, 0);
+        stats.addFileStats(fileInterval, file);
+    }
+
+    private int getIntervalOfFile(int lines, int interval) {
+        if (interval >= nInterval) {
+            return interval - 1;
+        }
+        if (lines < (interval + 1) * intervalSize) {
+            return interval;
+        }
+        return getIntervalOfFile(lines, interval + 1);
     }
 }
