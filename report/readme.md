@@ -1,3 +1,10 @@
+<!--- For math in pdf conversion
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
+</script>
+-->
+
 # PCD Assignment 01
 
 > Desclaimer: la prima parte di questo report è presente perché la soluzione adottata non scalava in performance con il JDK8.
