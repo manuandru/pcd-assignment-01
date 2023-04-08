@@ -3,7 +3,7 @@ package pcd.assignment01.model.stats;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-qqq
+
 public class StatisticCounter {
 
     private final List<Interval> stats = new ArrayList<>();
