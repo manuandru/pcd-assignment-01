@@ -21,7 +21,7 @@ Il primo approccio per la lettura da file è stata un'architettura produttore (1
 
 A fronte dei test eseguiti, il singolo produttore è più rapido ad esplorare ricorsivamente le cartelle, rispetto al consumo dei file da parte dei consumatori.
 
-[Architettura produttore-consumatore](../part-01/src/pcd/concurrent_reading/producer_consumer/)
+[Implementazione produttore-consumatore](../part-01/src/pcd/concurrent_reading/producer_consumer/)
 
 #### Performance
 
