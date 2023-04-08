@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Interval {
 
-    private final List<String> files = new ArrayList<>();
+    private final List<Pair<String, Integer>> files = new ArrayList<>();
     private int fileCount = 0;
 
-    public List<String> getFiles() {
+    public List<Pair<String, Integer>> getFiles() {
         return files;
     }
 
@@ -16,8 +16,8 @@ public class Interval {
         return fileCount;
     }
 
-    public void add(String file) {
+    public void add(String file, int lines) {
         fileCount++;
-        files.add(file);
+        files.add(new Pair<>(file, lines));
     }
 }

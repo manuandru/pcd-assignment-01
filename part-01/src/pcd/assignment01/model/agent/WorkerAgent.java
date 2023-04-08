@@ -50,7 +50,7 @@ public class WorkerAgent extends Thread {
         }
 
         int fileInterval = getIntervalOfFile(lines, 0);
-        stats.addFileStats(fileInterval, file);
+        stats.addFileStats(fileInterval, file, lines);
     }
 
     private int getIntervalOfFile(int lines, int interval) {

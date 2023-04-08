@@ -58,6 +58,10 @@ public class Main {
             logInterval(i * intervalSize, (i + 1) * intervalSize, intervals.get(i).getFileCount());
         }
         logInterval(maxInterval, intervals.get(nInterval-1).getFileCount());
+
+        for (String file : stats.getNLongestFiles(3)) {
+            System.out.println(file);
+        }
     }
 
     private static void logInterval(int lower, int upper, int count) {

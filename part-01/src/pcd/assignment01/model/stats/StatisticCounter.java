@@ -2,7 +2,8 @@ package pcd.assignment01.model.stats;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
+qqq
 public class StatisticCounter {
 
     private final List<Interval> stats = new ArrayList<>();
@@ -13,11 +14,22 @@ public class StatisticCounter {
         }
     }
 
-    public synchronized void addFileStats(int interval, String file) {
-        stats.get(interval).add(file);
+    public synchronized void addFileStats(int interval, String file, int lines) {
+        stats.get(interval).add(file, lines);
     }
 
+    // this synchronized is not needed cause any thread read it
     public synchronized List<Interval> getStats() {
         return this.stats; // maybe a defensive copy
+    }
+
+    // this is blocking -- do not call in GUI
+    public synchronized List<String> getNLongestFiles(int n) {
+        return this.stats.stream()
+                .flatMap(i -> i.getFiles().stream())
+                .sorted((f1, f2) -> f2.getY() - f1.getY())
+                .map(Pair::getX)
+                .limit(n)
+                .collect(Collectors.toList());
     }
 }
