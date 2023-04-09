@@ -4,6 +4,15 @@
   MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
 </script>
 -->
+<!--- For table alignment and bord
+<style>
+table {
+  margin: auto;
+  width: auto;
+  border: 1px solid black;
+}
+</style>
+-->
 
 # PCD Assignment 01
 
