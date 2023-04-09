@@ -50,7 +50,7 @@ Per poter apprezzare i risultati, il codice è stato eseguito analizzando tutti 
 Il JDK8 (*corretto-1.8.0_362*) non ha permesso di scalare notevolmente tramite la soluzione adottata, 
 $$ S \approx 1.4 $$
 
-<center>
+<div align="center">
 
 | #Consumers | Time (ms) |
 |:----------:|:---------:|
@@ -62,7 +62,7 @@ $$ S \approx 1.4 $$
 |     12     |   39397   |
 |     13     |   39957   |
 
-</center>
+</div>
 
 [VisualVM produttore consumatore JDK8](./img/architettura/prod-cons/visualvm-producer-consumer-jdk8.jpg)
 
@@ -70,7 +70,9 @@ $$ S \approx 1.4 $$
 
 Il JDK17 (*Oracle OpenJDK version 17.0.2*) invece, ha permesso di scalare notevolmente tramite la soluzione adottata.
 
-<center>
+$$ S = \frac{T_1}{T_N} \Rightarrow \frac{58.185}{10.698} \approx 5.5  $$
+
+<div align="center">
 
 | #Consumers | Time (ms) |
 |:----------:|:---------:|
@@ -85,9 +87,7 @@ Il JDK17 (*Oracle OpenJDK version 17.0.2*) invece, ha permesso di scalare notevo
 |     12     |   11328   |
 |     13     |   10698   |
 
-</center>
-
-$$ S = \frac{T_1}{T_N} \Rightarrow \frac{58.185}{10.698} \approx 5.5  $$
+</div>
 
 [Grafico speed up Produttore Consumatori](./img/architettura/prod-cons/prod-cons-grafico.png)
 
@@ -118,7 +118,7 @@ Anche in questo caso il JDK8 si rivela peggiore del JDK17 in termini di scalabil
 
 $$ S \approx 1.1 $$
 
-<center>
+<div align="center">
 
 |   #Worker  | Time (ms) |
 |:----------:|:---------:|
@@ -128,7 +128,7 @@ $$ S \approx 1.1 $$
 |      4     |    ...    |
 |     12     |   40136   |
 
-</center>
+</div>
 
 [VisualVM worker JDK8](./img/architettura/worker/visualvm-worker-jdk8.jpg)
 
@@ -137,7 +137,7 @@ $$ S \approx 1.1 $$
 
 $$ S \approx 5.5 $$
 
-<center>
+<div align="center">
 
 | #Workers | Time (ms) |
 |:--------:|:---------:|
@@ -152,7 +152,7 @@ $$ S \approx 5.5 $$
 |    13    |   10866   |
 
 
-</center>
+</div>
 
 [Grafico speed up Workers](./img/architettura/worker/worker-grafico.png)
 
@@ -186,7 +186,7 @@ Per la lettura del grafico si può partire da sinistra verso destra:
 
 $$ S \approx 4.5 $$
 
-<center>
+<div align="center">
 
 | #Consumers | Time (ms) |
 |:----------:|:---------:|
@@ -200,6 +200,6 @@ $$ S \approx 4.5 $$
 |     12     |    5834   |
 |     13     |    6214   |
 
-</center>
+</div>
 
 ![Grafico Speed up](./img/part-01/part01-grafico-speedup.png)
