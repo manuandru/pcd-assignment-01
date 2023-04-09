@@ -80,7 +80,7 @@ Il JDK17 (*Oracle OpenJDK version 17.0.2*) invece, ha permesso di scalare notevo
 
 $$ S = \frac{T_1}{T_N} \Rightarrow \frac{58.185}{10.698} \approx 5.5  $$
 
-![Grafico speed up](./img/architettura/prod-cons/prod-cons-grafico.png)
+[Grafico speed up Produttore Consumatori](./img/architettura/prod-cons/prod-cons-grafico.png)
 
 [VisualVM produttore consumatore JDK17](./img/architettura/prod-cons/visualvm-producer-consumer-jdk17.jpg)
 
@@ -145,7 +145,7 @@ $$ S \approx 5.5 $$
 
 </center>
 
-![Grafico speed up](./img/architettura/worker/worker-grafico.png)
+[Grafico speed up Workers](./img/architettura/worker/worker-grafico.png)
 
 [VisualVM worker JDK17](./img/architettura/worker/visualvm-worker-jdk8.jpg)
 
@@ -172,3 +172,11 @@ Il diagramma proposto in precedenza è stato dettagliato ulteriormente, in modo 
 >   - Il Monitor delle statistiche, dove vengono inserire queste ultime, un volta calcolate.
 
 ![Grafico architettura part 01](./img/part-01/part-01-schema.jpg)
+
+### Performance
+
+<center>
+
+
+
+</center>
