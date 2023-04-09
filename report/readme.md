@@ -148,3 +148,27 @@ $$ S \approx 5.5 $$
 ![Grafico speed up](./img/architettura/worker/worker-grafico.png)
 
 [VisualVM worker JDK17](./img/architettura/worker/visualvm-worker-jdk8.jpg)
+
+
+## Part 01
+
+A fronte dell'analisi sulla lettura dei file svolta in precedenza, è stata adottata la soluzione **Produttore - Consumatori**, dato che le prestazioni di velocità erano simili.
+
+Il diagramma proposto in precedenza è stato dettagliato ulteriormente, in modo da tenere conto sia il flusso di controllo del singolo *Produttore*, che l'aggiunta di un *Monitor* per raccogliere le statistiche dei files.
+
+> Per la lettura del grafico si può partire da sinistra verso destra:
+>
+> - La parte a sinistra è il ciclo di vita del **Producer** (Agente) che prende una cartella e la visita:
+>   - per ogni cartella che trova, la inserisce nel buffer delle cartelle da visitare.
+>   - per ogni file che trova, lo inserisce nel buffer di file da analizzare, ma deve attendere che il monitor sia disponibile.
+>   - **Nota:** il buffer delle cartelle è interno al Producer, mentre il buffer dei file no, quindi quest'ultimo deve attendere il monitor per poter aggiungere i files e poter analizzare una nuova cartella.
+>
+> - La parte centrale è quella relativa alla **TaskBag** (Monitor) ed entrambe le tipologie di Agenti competono su essa:
+>   - Il Producer cerca di aggiungere nuovi Task.
+>   - I Consumers richiedono nuovi Task da svolgere.
+>
+> - La parte a destra rappresenta il ciclo di vita dei **Consumers** (Agenti). Ogni consumer sfrutta 2 Monitor:
+>   - La TaskBag per ricevere il nuovo Task da svolgere che, una volta ricevuto, viene processato
+>   - Il Monitor delle statistiche, dove vengono inserire queste ultime, un volta calcolate.
+
+![Grafico architettura part 01](./img/part-01/part-01-schema.jpg)
