@@ -47,7 +47,8 @@ Per poter apprezzare i risultati, il codice è stato eseguito analizzando tutti 
 
 ##### JDK8 
 
-Il JDK8 (*corretto-1.8.0_362*) non ha permesso di scalare notevolmente tramite la soluzione adottata, 
+Il JDK8 (*corretto-1.8.0_362*) non ha permesso di scalare notevolmente tramite la soluzione adottata.
+
 $$ S \approx 1.4 $$
 
 <div align="center">
@@ -70,7 +71,7 @@ $$ S \approx 1.4 $$
 
 Il JDK17 (*Oracle OpenJDK version 17.0.2*) invece, ha permesso di scalare notevolmente tramite la soluzione adottata.
 
-$$ S = \frac{T_1}{T_N} \Rightarrow \frac{58.185}{10.698} \approx 5.5  $$
+$$ S \approx 5.5  $$
 
 <div align="center">
 
@@ -184,7 +185,23 @@ Per la lettura del grafico si può partire da sinistra verso destra:
 
 ### Performance
 
-$$ S \approx 4.5 $$
+Come proposto in precedenza, anche in questo caso è presente uno *Speed Up* da tenere in considerazione.
+
+Tenendo in considerazione anche l'*Efficienza*, un buon numero di Thread è 6.
+
+$$
+S = \frac{T_1}{T_N} \Rightarrow \frac{25.991}{6.019} \approx 4.32
+\qquad \Rightarrow \qquad
+E = \frac{S}{P} \Rightarrow \frac{4.32}{6} \approx 0.72
+$$
+
+Al contrario, aumentando il numero di Thread fino a 12, dove possiamo osservare uno *Speed Up* leggermente più alto, riduciamo di molto l'*Efficienza*.
+
+$$
+S = \frac{25.991}{5.834} \approx 4.46
+\qquad \Rightarrow \qquad
+E = \frac{4.46}{12} \approx 0.37
+$$
 
 <div align="center">
 
