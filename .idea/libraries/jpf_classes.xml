@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jpf-classes">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jpf-runner/build/jpf-classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jpf-runner/build/jpf-annotations.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
