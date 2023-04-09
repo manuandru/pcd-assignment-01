@@ -54,10 +54,10 @@ public class Main {
 
         // maybe some bugs if MAXL could not be divided by NI
         List<Interval> intervals = stats.getStats();
-        for (int i = 0; i < (nInterval-1); i++) {
+        for (int i = 0; i < (nInterval - 1); i++) {
             logInterval(i * intervalSize, (i + 1) * intervalSize, intervals.get(i).getFileCount());
         }
-        logInterval(maxInterval, intervals.get(nInterval-1).getFileCount());
+        logInterval(maxInterval, intervals.get(nInterval - 1).getFileCount());
 
         for (String file : stats.getNLongestFiles(3)) {
             System.out.println(file);
@@ -67,6 +67,7 @@ public class Main {
     private static void logInterval(int lower, int upper, int count) {
         System.out.println("[" + lower + ", " + upper + "]: " + count + " files");
     }
+
     private static void logInterval(int lower, int count) {
         System.out.println("[" + lower + ", inf]: " + count + " files");
     }
