@@ -7,14 +7,14 @@ import pcd.assignment01.model.task.TaskBag;
 import java.io.*;
 import java.util.Optional;
 
-public class WorkerAgent extends Thread {
+public class ConsumerAgent extends Thread {
 
     private final TaskBag bag;
     private final StatisticCounter stats;
     private final int nInterval;
     private final int intervalSize;
 
-    public WorkerAgent(TaskBag bag, String name, StatisticCounter stats, int nInterval, int maxInterval) {
+    public ConsumerAgent(TaskBag bag, String name, StatisticCounter stats, int nInterval, int maxInterval) {
         this.bag = bag;
         this.stats = stats;
         this.nInterval = nInterval;

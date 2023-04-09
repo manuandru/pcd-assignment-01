@@ -1,7 +1,7 @@
 package pcd.assignment01;
 
 import pcd.assignment01.model.agent.ProducerAgent;
-import pcd.assignment01.model.agent.WorkerAgent;
+import pcd.assignment01.model.agent.ConsumerAgent;
 import pcd.assignment01.model.stats.Interval;
 import pcd.assignment01.model.stats.StatisticCounter;
 import pcd.assignment01.model.task.TaskBag;
@@ -36,7 +36,7 @@ public class Main {
         List<Thread> consumers = new ArrayList<>();
 
         for (int i = 0; i < CONSUMERS_COUNT; i++) {
-            consumers.add(new WorkerAgent(bag, "Worker-" + i, stats, nInterval, maxInterval));
+            consumers.add(new ConsumerAgent(bag, "Worker-" + i, stats, nInterval, maxInterval));
         }
 
         long start = System.currentTimeMillis();
