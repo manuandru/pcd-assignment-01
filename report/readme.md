@@ -220,3 +220,26 @@ $$
 </div>
 
 ![Grafico Speed up](./img/part-01/part01-grafico-speedup.png)
+
+### JPF
+
+Il software è stato notevolmente semplificato, senza intaccare la logica operativa. Durante il model checking sono stati impiegati 3 Thread per i consumers.
+
+Il task che i consumers svolgono è quello di contare la lunghezza della stringa data in input e passarla al monitor, che ne tiene la somma totale.
+
+Per simulare il comportamento del fileSystem è stata utilizzata una mappa da stringhe (nome cartella) a lista di stringhe (lista di possibili file o altre cartelle). Una stringa è considerata cartella se è contenuta come chiave nella mappa.
+
+```java
+Map<String, List<String>> fileSystem;
+```
+
+La struttura di file system utilizzato durante il model checking è la seguente:
+
+```fileSystem
+folder1
+├── file1
+├── file2
+├── folder2
+│   ├── file3
+│   └── folder3
+```
