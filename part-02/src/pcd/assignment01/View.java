@@ -1,6 +1,9 @@
 package pcd.assignment01;
 
 
+import pcd.assignment01.coordination.ModelObserver;
+import pcd.assignment01.stats.StatisticForView;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -117,7 +120,7 @@ class View extends JFrame implements ModelObserver {
     }
 
     @Override
-    public void modelUpdated(StatsForView stats) {
+    public void modelUpdated(StatisticForView stats) {
         try {
             SwingUtilities.invokeLater(() -> {
                 distributions.setText(stats.getIntervals());

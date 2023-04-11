@@ -1,4 +1,4 @@
-package pcd.assignment01.model.stats;
+package pcd.assignment01.stats;
 
 import java.util.ArrayList;
 import java.util.List;

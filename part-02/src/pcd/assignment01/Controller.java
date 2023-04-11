@@ -1,9 +1,10 @@
 package pcd.assignment01;
 
-import pcd.assignment01.model.agent.ConsumerAgent;
-import pcd.assignment01.model.agent.ProducerAgent;
-import pcd.assignment01.model.stats.StatisticCounter;
-import pcd.assignment01.model.task.TaskBag;
+import pcd.assignment01.coordination.StopFlag;
+import pcd.assignment01.coordination.agent.ConsumerAgent;
+import pcd.assignment01.coordination.agent.ProducerAgent;
+import pcd.assignment01.stats.StatisticCounter;
+import pcd.assignment01.coordination.agent.task.TaskBag;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
-package pcd.assignment01.model.agent;
+package pcd.assignment01.coordination.agent;
 
-import pcd.assignment01.StopFlag;
-import pcd.assignment01.model.task.FileAnalyzerTask;
-import pcd.assignment01.model.task.Task;
-import pcd.assignment01.model.task.TaskBag;
+import pcd.assignment01.coordination.StopFlag;
+import pcd.assignment01.coordination.agent.task.FileAnalyzerTask;
+import pcd.assignment01.coordination.agent.task.Task;
+import pcd.assignment01.coordination.agent.task.TaskBag;
 
 import java.io.*;
 import java.util.*;

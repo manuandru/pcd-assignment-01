@@ -1,4 +1,4 @@
-package pcd.assignment01;
+package pcd.assignment01.coordination;
 
 public class StopFlag {
 

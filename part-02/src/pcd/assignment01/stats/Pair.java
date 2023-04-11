@@ -1,4 +1,4 @@
-package pcd.assignment01.model.stats;
+package pcd.assignment01.stats;
 
 class Pair<X, Y> {
 

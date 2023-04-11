@@ -1,4 +1,4 @@
-package pcd.assignment01.model.task;
+package pcd.assignment01.coordination.agent.task;
 
 public class FileAnalyzerTask implements Task {
 

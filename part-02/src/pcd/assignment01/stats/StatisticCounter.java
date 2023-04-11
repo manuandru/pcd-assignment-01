@@ -1,8 +1,7 @@
-package pcd.assignment01.model.stats;
+package pcd.assignment01.stats;
 
-import pcd.assignment01.ModelObserver;
-import pcd.assignment01.StatsForView;
-import pcd.assignment01.StopFlag;
+import pcd.assignment01.coordination.ModelObserver;
+import pcd.assignment01.coordination.StopFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class StatisticCounter {
 
     private void updateUI() {
         // getOrderedFiles() is cpu bound -- it's done by the Worker
-        StatsForView calculated = new StatsForView(intervals, maxInterval, getOrderedFiles());
+        StatisticForView calculated = new StatisticForView(intervals, maxInterval, getOrderedFiles());
 
         if (!stopFlag.isStopped()) { // avoid updating model if stop is requested
             observer.modelUpdated(calculated);

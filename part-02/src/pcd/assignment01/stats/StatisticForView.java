@@ -1,18 +1,16 @@
-package pcd.assignment01;
-
-import pcd.assignment01.model.stats.Interval;
+package pcd.assignment01.stats;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StatsForView {
+public class StatisticForView {
 
     private final List<Interval> intervals;
     private final List<String> orderedFiles;
     private final int maxInterval;
     private final int intervalSize;
 
-    public StatsForView(List<Interval> stats, int maxInterval, List<String> orderedFiles) {
+    public StatisticForView(List<Interval> stats, int maxInterval, List<String> orderedFiles) {
         this.intervals = stats;
         this.maxInterval = maxInterval;
         this.intervalSize = maxInterval / (stats.size() - 1);
