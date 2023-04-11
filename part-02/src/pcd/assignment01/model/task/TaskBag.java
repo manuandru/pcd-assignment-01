@@ -32,4 +32,8 @@ public class TaskBag {
         this.endInsert = true;
         notifyAll();
     }
+
+    public synchronized void clear() {
+        this.bag.clear();
+    }
 }

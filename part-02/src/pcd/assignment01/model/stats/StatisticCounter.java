@@ -2,6 +2,7 @@ package pcd.assignment01.model.stats;
 
 import pcd.assignment01.ModelObserver;
 import pcd.assignment01.StatsForView;
+import pcd.assignment01.StopFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +13,15 @@ public class StatisticCounter {
     private final List<Interval> intervals = new ArrayList<>();
     private final ModelObserver observer;
     private final int maxInterval;
+    private final StopFlag stopFlag;
 
-    public StatisticCounter(int intervals, int maxInterval, ModelObserver observer) {
+    public StatisticCounter(int intervals, int maxInterval, ModelObserver observer, StopFlag stopFlag) {
         for (int i = 0; i < intervals; i++) {
             this.intervals.add(new Interval());
         }
         this.maxInterval = maxInterval;
         this.observer = observer;
+        this.stopFlag = stopFlag;
     }
 
     public synchronized void addFileStats(int interval, String file, int lines) {
@@ -29,7 +32,10 @@ public class StatisticCounter {
     private void updateUI() {
         // getOrderedFiles() is cpu bound -- it's done by the Worker
         StatsForView calculated = new StatsForView(intervals, maxInterval, getOrderedFiles());
-        observer.modelUpdated(calculated);
+
+        if (!stopFlag.isStopped()) { // avoid updating model if stop is requested
+            observer.modelUpdated(calculated);
+        }
     }
 
     // this is blocking -- do not call in GUI

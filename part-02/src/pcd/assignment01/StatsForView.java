@@ -43,4 +43,8 @@ public class StatsForView {
                 .limit(n)
                 .collect(Collectors.joining("\n"));
     }
+
+    public String getLongestFiles() {
+        return String.join("\n", orderedFiles);
+    }
 }

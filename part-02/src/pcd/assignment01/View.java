@@ -4,21 +4,21 @@ package pcd.assignment01;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Set;
 
 import javax.swing.*;
 
 class View extends JFrame implements ModelObserver {
 
-    private final int COUNT_LONGEST_FILES = 3;
-    private Controller controller;
+    private final Controller controller;
     private JTextField directoryInput;
-    private JTextField intervalsInput;
-    private JTextField maxIntervalInput;
-    JTextArea distributions;
-    JTextArea longestFiles;
-
-    JButton startButton;
-    JButton stopButton;
+    private final JTextField intervalsInput;
+    private final JTextField maxIntervalInput;
+    private final JTextField extensionInput;
+    private final JTextArea distributions;
+    private final JTextArea longestFiles;
+    private final JButton startButton;
+    private final JButton stopButton;
 
 
     public View(Controller controller) {
@@ -33,7 +33,7 @@ class View extends JFrame implements ModelObserver {
         add(topPanel, BorderLayout.NORTH);
 
         // Input definition
-        var inputPanel = new JPanel(new GridLayout(3, 2, 10, 0));
+        var inputPanel = new JPanel(new GridLayout(4, 2, 10, 0));
         topPanel.add(inputPanel);
 
         var chooseDirButton = new JButton("Choose directory");
@@ -49,6 +49,10 @@ class View extends JFrame implements ModelObserver {
         directoryInput = new JTextField("./", 20);
         directoryInput.setEnabled(false);
         inputPanel.add(directoryInput);
+
+        inputPanel.add(new JLabel("Extensions (comma separated, empty => all files)"));
+        extensionInput = new JTextField("java,c", 5);
+        inputPanel.add(extensionInput);
 
         inputPanel.add(new JLabel("Intervals:"));
         intervalsInput = new JTextField("5", 5);
@@ -67,19 +71,20 @@ class View extends JFrame implements ModelObserver {
 
         stopButton = new JButton("Ferma");
         stopButton.addActionListener(e -> stopAction());
+        stopButton.setEnabled(false);
         buttonsPanel.add(stopButton);
 
         // Center Area -- files and distributions
         JPanel centerPanel = new JPanel();
         add(centerPanel, BorderLayout.CENTER);
 
-        distributions = new JTextArea(28,20);
+        distributions = new JTextArea(25,20);
         distributions.setEnabled(false);
-        centerPanel.add(distributions);
+        centerPanel.add(new JScrollPane(distributions));
 
-        longestFiles = new JTextArea(28,20);
+        longestFiles = new JTextArea(25,40);
         longestFiles.setEnabled(false);
-        centerPanel.add(longestFiles);
+        centerPanel.add(new JScrollPane(longestFiles));
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent ev) {
@@ -99,8 +104,12 @@ class View extends JFrame implements ModelObserver {
         var dir = this.directoryInput.getText();
         var nInterval = Integer.parseInt(this.intervalsInput.getText());
         var maxInterval = Integer.parseInt(this.maxIntervalInput.getText());
+        var extensions = Set.of(this.extensionInput.getText().split(","));
+        if (this.extensionInput.getText().equals("")) {
+            extensions = Set.of();
+        }
 
-        this.controller.startSearch(dir, nInterval, maxInterval);
+        this.controller.startSearch(dir, nInterval, maxInterval, extensions);
     }
 
     private void stopAction() {
@@ -112,7 +121,8 @@ class View extends JFrame implements ModelObserver {
         try {
             SwingUtilities.invokeLater(() -> {
                 distributions.setText(stats.getIntervals());
-                longestFiles.setText(stats.getLongestFiles(COUNT_LONGEST_FILES));
+//                longestFiles.setText(stats.getLongestFiles());
+                longestFiles.setText(stats.getLongestFiles(10));
             });
         } catch (Exception ex){
             ex.printStackTrace();
