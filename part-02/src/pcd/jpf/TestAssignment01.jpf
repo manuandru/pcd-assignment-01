@@ -1,6 +1,6 @@
 target = pcd.jpf.Main
 
-classpath=out/production/part-01
+classpath=out/production/part-02
 
 listener=gov.nasa.jpf.listener.PreciseRaceDetector
 
