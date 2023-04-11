@@ -1,32 +1,44 @@
 package pcd.assignment01;
 
+import pcd.assignment01.model.agent.ConsumerAgent;
+import pcd.assignment01.model.agent.ProducerAgent;
+import pcd.assignment01.model.stats.StatisticCounter;
+import pcd.assignment01.model.task.TaskBag;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Controller {
 
-    public Controller(){
+    private final int countOfThread;
+    private View view;
+    private StopFlag stopFlag = new StopFlag();
 
-    }
-    public void processEvent(String event) {
-//        try {
-//            new Thread(() -> {
-//                try {
-//                    System.out.println("[Controller] Processing the event "+event+" ...");
-//                    Thread.sleep(1000);
-//                    model.update();
-//                    System.out.println("[Controller] Processing the event done.");
-//                } catch (Exception ex){
-//                    ex.printStackTrace();
-//                }
-//            }).start();
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
+    public Controller(int countOfThread){
+        this.countOfThread = countOfThread;
     }
 
-    public void startSearch() {
-        // TODO
+    public void startSearch(String directory, int nInterval, int maxInterval) {
+        TaskBag bag = new TaskBag();
+        StatisticCounter stats = new StatisticCounter(nInterval, maxInterval, view);
+
+        Thread producer = new ProducerAgent(bag, directory);
+        List<Thread> consumers = new ArrayList<>();
+        for (int i = 0; i < countOfThread; i++) {
+            consumers.add(new ConsumerAgent(bag, "Worker-" + i, stats, nInterval, maxInterval));
+        }
+
+        producer.start();
+        for (Thread c : consumers) {
+            c.start();
+        }
     }
 
     public void stopSearch() {
-        // TODO
+
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 }

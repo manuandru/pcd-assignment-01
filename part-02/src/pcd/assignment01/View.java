@@ -1,14 +1,17 @@
 package pcd.assignment01;
 
 
+import pcd.assignment01.model.stats.StatisticCounter;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
-class View extends JFrame {
+class View extends JFrame implements StatisticsObserver {
 
+    private final int COUNT_LONGEST_FILES = 3;
     private Controller controller;
     private JTextField directoryInput;
     private JTextField intervalsInput;
@@ -22,7 +25,7 @@ class View extends JFrame {
 
         this.controller = controller;
 
-        setSize(800, 600);
+        setSize(1200, 600);
         setResizable(false);
 
         var topPanel = new JPanel();
@@ -47,7 +50,7 @@ class View extends JFrame {
         inputPanel.add(directoryInput);
 
         inputPanel.add(new JLabel("Intervals:"));
-        intervalsInput = new JTextField("5", 10);
+        intervalsInput = new JTextField("5", 5);
         inputPanel.add(intervalsInput);
 
         inputPanel.add(new JLabel("Max Interval:"));
@@ -69,11 +72,11 @@ class View extends JFrame {
         JPanel centerPanel = new JPanel();
         add(centerPanel, BorderLayout.CENTER);
 
-        distributions = new JTextArea(28,30);
+        distributions = new JTextArea(28,20);
         distributions.setEnabled(false);
         centerPanel.add(distributions);
 
-        longestFiles = new JTextArea(28,30);
+        longestFiles = new JTextArea(28,20);
         longestFiles.setEnabled(false);
         centerPanel.add(longestFiles);
 
@@ -85,22 +88,28 @@ class View extends JFrame {
     }
 
     private void startAction() {
-        this.controller.startSearch();
+        distributions.setText("");
+        longestFiles.setText("");
+        var dir = this.directoryInput.getText();
+        var nInterval = Integer.parseInt(this.intervalsInput.getText());
+        var maxInterval = Integer.parseInt(this.maxIntervalInput.getText());
+        this.controller.startSearch(dir, nInterval, maxInterval);
     }
 
     private void stopAction() {
         this.controller.stopSearch();
     }
 
-//    @Override
-//    public void modelUpdated(MyModel model) {
-//        try {
-//            System.out.println("[View] model updated => updating the view");
-//            SwingUtilities.invokeLater(() -> {
-//                state.setText("state: " + model.getState());
-//            });
-//        } catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//    }
+    @Override
+    public void modelUpdated(StatsForView stats) {
+        try {
+            System.out.println("[View] model updated => updating the view");
+            SwingUtilities.invokeLater(() -> {
+                distributions.setText(stats.getIntervals());
+                longestFiles.setText(stats.getLongestFiles(COUNT_LONGEST_FILES));
+            });
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }
