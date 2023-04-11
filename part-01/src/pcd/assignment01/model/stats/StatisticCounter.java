@@ -18,7 +18,7 @@ public class StatisticCounter {
         stats.get(interval).add(file, lines);
     }
 
-    // this synchronized is not needed cause any thread read it
+    // this synchronized is not needed cause thread do not read it
     public synchronized List<Interval> getStats() {
         return this.stats; // maybe a defensive copy
     }
