@@ -1,6 +1,6 @@
 ---------------------- MODULE pcd_assignment01_part02 ----------------------
 
-EXTENDS TLC, Integers, Sequences, Naturals
+EXTENDS TLC, Integers, Sequences
 
 (*--algorithm stoppable_file_exploring
 variable
@@ -18,9 +18,12 @@ define
 
     ProducerEndsBeforeConsumers == []( (\E consumer \in Consumers: pc[consumer] = "Done") => pc["producer"] = "Done")
 
+    ConsumersDoAllTheWorkBeforeExit == []( (\A consumer \in Consumers: pc[consumer] = "Done") => TaskBag = <<>>)
+
     IfStoppedNoMoreUpdateToResult == IF lastUpdate # -1
                                      THEN finalResult = lastUpdate
                                      ELSE TRUE
+
 end define;
 
 process stopper = "stopper"
@@ -78,7 +81,7 @@ begin Consume:
 end process;
 
 end algorithm;*)
-\* BEGIN TRANSLATION (chksum(pcal) = "704fa187" /\ chksum(tla) = "110b5abd")
+\* BEGIN TRANSLATION (chksum(pcal) = "17a7601" /\ chksum(tla) = "9b2efbae")
 VARIABLES TaskBag, finalResult, lastUpdate, noMoreTasks, stopped, Consumers, 
           pc
 
@@ -88,6 +91,8 @@ LineCountsAreOk == IF pc["producer"] = "Done" /\ (\A consumer \in Consumers: pc[
                    ELSE TRUE
 
 ProducerEndsBeforeConsumers == []( (\E consumer \in Consumers: pc[consumer] = "Done") => pc["producer"] = "Done")
+
+ConsumersDoAllTheWorkBeforeExit == []( (\A consumer \in Consumers: pc[consumer] = "Done") => TaskBag = <<>>)
 
 IfStoppedNoMoreUpdateToResult == IF lastUpdate # -1
                                  THEN finalResult = lastUpdate
