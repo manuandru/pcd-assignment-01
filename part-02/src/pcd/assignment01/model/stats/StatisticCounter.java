@@ -1,6 +1,6 @@
 package pcd.assignment01.model.stats;
 
-import pcd.assignment01.StatisticsObserver;
+import pcd.assignment01.ModelObserver;
 import pcd.assignment01.StatsForView;
 
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 public class StatisticCounter {
 
     private final List<Interval> intervals = new ArrayList<>();
-    private final StatisticsObserver observer;
+    private final ModelObserver observer;
     private final int maxInterval;
 
-    public StatisticCounter(int intervals, int maxInterval, StatisticsObserver observer) {
+    public StatisticCounter(int intervals, int maxInterval, ModelObserver observer) {
         for (int i = 0; i < intervals; i++) {
             this.intervals.add(new Interval());
         }

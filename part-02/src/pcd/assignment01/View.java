@@ -1,15 +1,13 @@
 package pcd.assignment01;
 
 
-import pcd.assignment01.model.stats.StatisticCounter;
-
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
-class View extends JFrame implements StatisticsObserver {
+class View extends JFrame implements ModelObserver {
 
     private final int COUNT_LONGEST_FILES = 3;
     private Controller controller;
@@ -18,6 +16,9 @@ class View extends JFrame implements StatisticsObserver {
     private JTextField maxIntervalInput;
     JTextArea distributions;
     JTextArea longestFiles;
+
+    JButton startButton;
+    JButton stopButton;
 
 
     public View(Controller controller) {
@@ -60,11 +61,11 @@ class View extends JFrame implements StatisticsObserver {
         // Buttons definition
         var buttonsPanel = new JPanel();
         topPanel.add(buttonsPanel);
-        JButton startButton = new JButton("Avvia");
+        startButton = new JButton("Avvia");
         startButton.addActionListener(e -> startAction());
         buttonsPanel.add(startButton);
 
-        JButton stopButton = new JButton("Ferma");
+        stopButton = new JButton("Ferma");
         stopButton.addActionListener(e -> stopAction());
         buttonsPanel.add(stopButton);
 
@@ -88,11 +89,17 @@ class View extends JFrame implements StatisticsObserver {
     }
 
     private void startAction() {
+
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
+
         distributions.setText("");
         longestFiles.setText("");
+
         var dir = this.directoryInput.getText();
         var nInterval = Integer.parseInt(this.intervalsInput.getText());
         var maxInterval = Integer.parseInt(this.maxIntervalInput.getText());
+
         this.controller.startSearch(dir, nInterval, maxInterval);
     }
 
@@ -103,10 +110,21 @@ class View extends JFrame implements StatisticsObserver {
     @Override
     public void modelUpdated(StatsForView stats) {
         try {
-            System.out.println("[View] model updated => updating the view");
             SwingUtilities.invokeLater(() -> {
                 distributions.setText(stats.getIntervals());
                 longestFiles.setText(stats.getLongestFiles(COUNT_LONGEST_FILES));
+            });
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void requiredActionIsComplete() {
+        try {
+            SwingUtilities.invokeLater(() -> {
+                stopButton.setEnabled(false);
+                startButton.setEnabled(true);
             });
         } catch (Exception ex){
             ex.printStackTrace();

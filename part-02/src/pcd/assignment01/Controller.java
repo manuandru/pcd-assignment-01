@@ -7,6 +7,7 @@ import pcd.assignment01.model.task.TaskBag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class Controller {
 
@@ -19,23 +20,42 @@ public class Controller {
     }
 
     public void startSearch(String directory, int nInterval, int maxInterval) {
-        TaskBag bag = new TaskBag();
-        StatisticCounter stats = new StatisticCounter(nInterval, maxInterval, view);
 
-        Thread producer = new ProducerAgent(bag, directory);
-        List<Thread> consumers = new ArrayList<>();
-        for (int i = 0; i < countOfThread; i++) {
-            consumers.add(new ConsumerAgent(bag, "Worker-" + i, stats, nInterval, maxInterval));
-        }
+        try {
+            new Thread(() -> {
+                TaskBag bag = new TaskBag();
+                StatisticCounter stats = new StatisticCounter(nInterval, maxInterval, view);
 
-        producer.start();
-        for (Thread c : consumers) {
-            c.start();
+                Thread producer = new ProducerAgent(bag, directory);
+                List<Thread> consumers = new ArrayList<>();
+                for (int i = 0; i < countOfThread; i++) {
+                    consumers.add(new ConsumerAgent(bag, "Worker-" + i, stats, nInterval, maxInterval));
+                }
+
+                CountDownLatch latch = new CountDownLatch(countOfThread);
+
+                producer.start();
+                for (Thread c : consumers) {
+                    c.start();
+                }
+
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                view.requiredActionIsComplete();
+
+
+            }).start();
+        } catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 
     public void stopSearch() {
-
+        // TODO
     }
 
     public void setView(View view) {
