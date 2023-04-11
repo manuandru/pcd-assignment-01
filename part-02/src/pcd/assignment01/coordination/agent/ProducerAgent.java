@@ -21,7 +21,6 @@ public class ProducerAgent extends Thread {
         folders.add(startingPath);
         this.stopFlag = stopflag;
         this.extensions = extensions;
-        System.out.println(extensions.isEmpty());
     }
 
     @Override
@@ -54,7 +53,6 @@ public class ProducerAgent extends Thread {
                     } else {
                         var splitted = node.getName().split("\\.");
                         if (splitted.length > 1 && extensions.contains(splitted[1])) {
-                            System.out.println(Arrays.toString(splitted));
                             tasks.addLast(new FileAnalyzerTask(node.getPath()));
                         }
                     }
