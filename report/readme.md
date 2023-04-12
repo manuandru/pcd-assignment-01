@@ -225,7 +225,7 @@ $$
 
 Il software è stato notevolmente semplificato, senza intaccare la logica operativa. Durante il model checking sono stati impiegati 3 Thread per i consumers.
 
-Il task che i consumers svolgono è quello di contare la lunghezza della stringa data in input e passarla al monitor, che ne tiene la somma totale.
+Il task svolto dai consumers è quello di contare la lunghezza della stringa data in input e passarla al monitor, che ne tiene la somma totale.
 
 Per simulare il comportamento del fileSystem è stata utilizzata una mappa da stringhe (nome cartella) a lista di stringhe (lista di possibili file o altre cartelle). Una stringa è considerata cartella se è contenuta come chiave nella mappa.
 
@@ -239,7 +239,42 @@ La struttura di file system utilizzato durante il model checking è la seguente:
 folder1
 ├── file1
 ├── file2
-├── folder2
-│   ├── file3
-│   └── folder3
+└── folder2
+    ├── file3
+    └── folder3
 ```
+
+### TLA+ PlusCal
+
+Il modello del design è stato realizzato partendo dall'architettura *Produttore-Consumatore* fornita, considerando un buffer illimitato.
+
+Il singolo *Producer* mantiene interno un buffer di file visitare, li scorre ed li inserisce nella *TaskBag*, il monitor condiviso. Una volta terminati i file da visitare, il *Producer* termina.
+
+I *Consumers* competono per riceve i task da svolgere, rimanendo in attesa nel caso non ce ne siano. Una volta ricevuto un task, lo svolgono ed aggiornano il risultato finale.
+
+Un *Flag*, che aggiorna il *Producer* una volta terminato il suo compito, permette di sbloccare i *Consumers* in attesa, permettendo la terminazione di tutti i processi.
+
+È controllata l'**invariante** che, alla terminazione di tutti i processi, il risultato finale sia corretto.
+
+Inoltre, è garantita la *proprietà* che il *Producer* termini prima di qualsiasi *Consumer*.
+
+$$
+  \Box(\exist \texttt{ consumer done} \Rightarrow \texttt{producer done})
+$$
+
+Un'altra *proprietà* garantita è che, se sono terminati tutti i *Consumers*, allora non ci saranno più task da svolgere.
+
+$$
+  \Box(\forall \texttt{ consumers done} \Rightarrow \texttt{TaskBag is Empty})
+$$
+
+
+## Part 02
+
+La seconda parte è stata realizzata estendendo la prima, permettendo all'architettura *Produttore-Consumatori* di essere interrotta in qualsiasi momento.
+
+Per farlo è stato introdotto un *Flag* di stop condiviso, in modo da interrompere la ricerca dei files.
+
+Prima di eseguire una nuova ricerca, è necessario terminare  la precedente oppure attendere che sia terminata.
+
+![Schema Part 02](./img/part-02/part-02-schema.jpg)
