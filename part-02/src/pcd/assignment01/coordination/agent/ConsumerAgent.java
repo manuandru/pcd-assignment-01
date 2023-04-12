@@ -1,11 +1,13 @@
 package pcd.assignment01.coordination.agent;
 
 import pcd.assignment01.coordination.StopFlag;
-import pcd.assignment01.stats.StatisticCounter;
 import pcd.assignment01.coordination.agent.task.Task;
 import pcd.assignment01.coordination.agent.task.TaskBag;
+import pcd.assignment01.stats.StatisticCounter;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
@@ -57,6 +59,9 @@ public class ConsumerAgent extends Thread {
 
     private void analyzeFile(String file) {
         int lines = 0;
+//        if (stopFlag.isStopped()) {
+//            return;
+//        }
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             // If stopFlag monitor is used here:
             // pro: we can escape a long reading file and instantly exit
@@ -66,12 +71,14 @@ public class ConsumerAgent extends Thread {
             //
             // If the stop is requested: this thread normally end his work,
             // but model updates are not sent to the GUI
-//            while (reader.ready() && !stopFlag.isStopped()){
+//            while (reader.ready() && !stopFlag.isStopped()) {
 //                reader.readLine();
 //                lines++;
 //            }
             lines = (int) reader.lines().count();
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         int fileInterval = getIntervalOfFile(lines, 0);
         stats.addFileStats(fileInterval, file, lines);
