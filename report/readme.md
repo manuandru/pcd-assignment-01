@@ -259,7 +259,7 @@ Un *Flag*, che aggiorna il *Producer* una volta terminato il suo compito, permet
 Inoltre, è garantita la *proprietà* che il *Producer* termini prima di qualsiasi *Consumer*.
 
 $$
-  \Box(\exist \texttt{ consumer done} \Rightarrow \texttt{producer done})
+  \Box(\exists \texttt{ consumer done} \Rightarrow \texttt{producer done})
 $$
 
 Un'altra *proprietà* garantita è che, se sono terminati tutti i *Consumers*, allora non ci saranno più task da svolgere.
