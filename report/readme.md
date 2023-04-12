@@ -278,3 +278,23 @@ Per farlo è stato introdotto un *Flag* di stop condiviso, in modo da interrompe
 Prima di eseguire una nuova ricerca, è necessario terminare  la precedente oppure attendere che sia terminata.
 
 ![Schema Part 02](./img/part-02/part-02-schema.jpg)
+
+### JPF
+
+La soluzione adottata per JPF è stata semplificata ulteriormente, in modo da rendere fattibile il model checking.
+
+Il funzionamento generale è stato mantenuto, enfatizzando che la *GUI* possa richiedere di terminare la ricerca in qualsiasi momento.
+
+Questo approccio genera uno esito non deterministico, infatti ciò che si è andato a verificare è che lo stato finale sia minore o uguale a quello atteso.
+
+### TLA+ PlusCal
+
+La soluzione proposta per verificare la correttezza del modello è partita da quella precedente.
+
+È stato introdotto un Processo che ferma l'esecuzione del sistema, in modo da simulare l'azione della GUI.
+
+L'**invariante** sul risultato finale viene modificata, infatti non è possibile prevedere l'esito e il risultato finale è inferiore o uguale a quello atteso.
+
+Inoltre, è stata aggiunta un'ulteriore **invariante**, per verificare che il risultato finale non sia più modificato dopo che il sistema è stato fermato.
+
+Le **proprietà** viste in precedenza sono mantenute.
