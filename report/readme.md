@@ -164,7 +164,7 @@ $$ S \approx 5.5 $$
 
 A fronte dell'analisi sulla lettura dei file svolta in precedenza, è stata adottata la soluzione **Produttore - Consumatori**, dato che le prestazioni di velocità erano simili.
 
-Il diagramma proposto in precedenza è stato dettagliato ulteriormente, in modo da tenere conto sia il flusso di controllo del singolo *Produttore*, che l'aggiunta di un *Monitor* per raccogliere le statistiche dei files.
+Il diagramma proposto in precedenza è stato dettagliato ulteriormente, in modo da tenere conto del flusso di controllo del singolo *Produttore* ed è stato aggiunto un *Monitor* per raccogliere le statistiche dei files.
 
 Per la lettura del grafico si può partire da sinistra verso destra:
 
@@ -252,7 +252,7 @@ Il singolo *Producer* mantiene interno un buffer di file visitare, li scorre ed 
 
 I *Consumers* competono per riceve i task da svolgere, rimanendo in attesa nel caso non ce ne siano. Una volta ricevuto un task, lo svolgono ed aggiornano il risultato finale.
 
-Un *Flag*, che aggiorna il *Producer* una volta terminato il suo compito, permette di sbloccare i *Consumers* in attesa, permettendo la terminazione di tutti i processi.
+Un *Flag*, che aggiorna il *Producer* una volta terminato il suo compito, permette di sbloccare i *Consumers* in attesa, rendendo possibile la terminazione di tutti i processi.
 
 È controllata l'**invariante** che, alla terminazione di tutti i processi, il risultato finale sia corretto.
 
