@@ -14,7 +14,7 @@ table {
 </style>
 -->
 
-# PCD Assignment 01
+# PCD Assignment 01 - Manuel Andruccioli
 
 > Desclaimer: la prima parte di questo report è presente perché la soluzione adottata non scalava in performance con il JDK8.
 >
